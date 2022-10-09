@@ -1,0 +1,4 @@
+<input type="text" [value]="tela" readonly>
+<button *ngFor="let num of simbolos" (click)="digitou(num)">{{num}}</button>
+<button (click)="result()">=</button>
+<button (click)="limptela()">CE</button>
