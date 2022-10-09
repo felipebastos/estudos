@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'estudos';
   tela = "";
-  simbolos : string[] = ['1', '2', '3','4','5','6','7','8','9','0','+','-','*','/'];
+  simbolos : string[] = ['1', '2', '3','4','5','6','7','8','9','0','+','-','*','/','.'];
   digitou(letra:string): void{
     this.tela += letra; 
   }
