@@ -5,10 +5,10 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="botoes">
       <button *ngFor="let num of simbolos" (click)="digitou(num)">{{num}}</button>
+      <button (click)="result()">=</button>
+      <button (click)="limptela()">CE</button>
     </div>
-    <button (click)="result()">=</button><br>
-    <button (click)="limptela()">CE</button>
   </div>
 </div>
