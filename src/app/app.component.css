@@ -29,3 +29,6 @@ input {
     justify-content: center;
     flex-wrap: wrap;
 }
+div.botao{
+    width: 30%;
+}

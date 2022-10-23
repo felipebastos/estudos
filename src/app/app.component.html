@@ -6,9 +6,15 @@
   </div>
   <div>
     <div class="botoes">
-      <button *ngFor="let num of simbolos" (click)="digitou(num)">{{num}}</button>
-      <button (click)="result()">=</button>
-      <button (click)="limptela()">CE</button>
+      <div class="botao" *ngFor="let num of simbolos">
+        <app-botao [texto]="num" (apertou)="digitou($event)"></app-botao>
+      </div>
+      <div class="botao">
+        <app-botao [texto]="'='" (apertou)="result()"></app-botao>
+      </div>
+      <div class="botao">
+        <app-botao [texto]="'CE'" (apertou)="limptela()"></app-botao>
+      </div>
     </div>
   </div>
 </div>
