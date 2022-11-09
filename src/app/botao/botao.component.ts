@@ -5,16 +5,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './botao.component.html',
   styleUrls: ['./botao.component.css']
 })
-export class BotaoComponent implements OnInit {
+export class BotaoComponent {
   @Input() texto = '';
   @Output() apertou = new EventEmitter<string>()
   constructor() { }
 
-  ngOnInit(): void {
-  }
   onClick() {
     this.apertou.emit(this.texto)
-
   }
 
 }
