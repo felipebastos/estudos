@@ -6,8 +6,10 @@ import {
   of,
   Subject,
   switchMap,
+  take,
   takeUntil,
 } from 'rxjs';
+import { Film } from './models/film';
 import { Person } from './models/person';
 import { SwService } from './swservice.service';
 
@@ -18,6 +20,7 @@ import { SwService } from './swservice.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public person: Observable<Person> = new Observable<Person>();
+  public films$: Observable<Film[]> = new Observable<Film[]>();
   public people: Observable<Person[]> = new Observable<Person[]>();
   public everyone: Observable<Person[]> = new Observable<Person[]>();
 
@@ -41,6 +44,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onIdChange(): void {
     this.person = this.swapi.getPerson(this.idToLoad);
+    this.person.pipe(take(1)).subscribe((person) => {
+      this.films$ = this.swapi.getFilms(person.films);
+    });
   }
 
   onPageChange(): void {
@@ -50,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.people = this.swapi.getPeople();
     }
   }
-  
+
   ver(url: string): void {
     const num: number = Number(url.split('/').reverse()[1]);
     this.idToLoad = num;

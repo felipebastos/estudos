@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  defer,
-  from,
+  reduce,
   map,
-  merge,
   Observable,
   of,
-  scan,
   switchMap,
+  take,
   tap,
+  from,
+  delay,
+  scan,
+  mergeAll,
+  mergeMap,
 } from 'rxjs';
+import { Film } from './models/film';
 import { Person } from './models/person';
 import { PersonPagination } from './models/personPagination';
 
@@ -107,6 +111,29 @@ export class SwService {
       );
     return loader(this.ROOT_PATH + this.PERSON_ROUTE).pipe(
       switchMap((page) => of(page.results))
+    );
+  }
+
+  getFilms(urls: string[]): Observable<Film[]> {
+    /**
+     * Que tal fazer agora sem recursão?
+     *
+     * O operador "from" emitirá um item do array entregue por vez.
+     *
+     * No pipe disso o operador "mergeMap" vai unir o resultado de todas as notificações
+     * que o "from" lançar (se usarmos map ou switchMap aqui só vamos ter acesso ao último).
+     *
+     * O operador "scan" nos permite definir uma função para acumular os valores de curr
+     * no acumulador indicado (que aqui fiz em forma de lista).
+     * O segundo argumento de scan é o valor inicial do acumulador.
+     *
+     * Finalmente como assinei o método como um observable de Film[], o operador "switchMap" muda a
+     * cadeia para o formato correto.
+     */
+    return from(urls).pipe(
+      mergeMap((url) => this.http.get<Film>(url)),
+      scan((list: Film[], curr: Film) => [...list, curr], []),
+      switchMap((lista) => of(lista))
     );
   }
 }

@@ -13,3 +13,12 @@ div.card {
     width: 20%;
     text-align: center;
 }
+
+div.pcard {
+    border: 1px solid white;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    width: 20%;
+    text-align: left;
+}

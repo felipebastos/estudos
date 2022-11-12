@@ -5,12 +5,25 @@ Encontre um personagem:
         Visto que o observable pode não ter ainda notificado seu resultado,
         a ? garante que só em caso de não-nulo serão pedidas as propriedades.
     -->
-    <ul *ngIf="person | async; else nenhum">
-        <li>{{ (person | async)?.name }}</li>
-        <li>{{ (person | async)?.height }}cm</li>
-        <li>{{ (person | async)?.mass }}kg</li>
-        <li>{{ (person | async)?.hair_color }}</li>
-    </ul>
+    <div *ngIf="person | async as p; else nenhum" class="container">
+        <div class="pcard">
+            <h2>Dados pessoais</h2>
+            <ul>
+                <li>{{ p.name }}</li>
+                <li>{{ p.height }}cm</li>
+                <li>{{ p.mass }}kg</li>
+                <li>{{ p.hair_color }}</li>
+            </ul>
+        </div>
+        <div class="pcard">
+            <h2>Filmes</h2>
+            <div *ngIf="(films$ | async) as films">
+                <ul>
+                    <li *ngFor="let filme of films">{{filme.title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <ng-template #nenhum> loading... </ng-template>
 </div>
 <ng-template #zero>
