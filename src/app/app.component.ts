@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.person = this.swapi.getPerson();
-    this.people = this.swapi.getPeople();
+    this.people = this.swapi.getPeopleRx();
   }
 
   ngOnDestroy(): void {
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.pageToLoad > 0) {
       this.people = this.swapi.getPagePeople(this.pageToLoad);
     } else {
-      this.people = this.swapi.getPeople();
+      this.people = this.swapi.getPeopleRx();
     }
   }
 

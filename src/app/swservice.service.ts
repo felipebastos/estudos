@@ -13,6 +13,7 @@ import {
   scan,
   mergeAll,
   mergeMap,
+  range,
 } from 'rxjs';
 import { Film } from './models/film';
 import { Person } from './models/person';
@@ -95,11 +96,13 @@ export class SwService {
      * no observable gerado anteriormente.
      */
 
-    const loader = (url: string, page: number = 1) =>
-      this.http.get<PersonPagination>(url + `?page=${page}`).pipe(
+    const loader = (
+      url: string = this.ROOT_PATH + this.PERSON_ROUTE + '?page=1'
+    ) =>
+      this.http.get<PersonPagination>(url).pipe(
         switchMap((data): Observable<PersonPagination> => {
-          if (data.results.length >= 10) {
-            return loader(url, page + 1).pipe(
+          if (data.next) {
+            return loader(data.next).pipe(
               map((res: PersonPagination) => ({
                 ...data,
                 results: [...data.results, ...res.results],
@@ -109,9 +112,7 @@ export class SwService {
           return of(data);
         })
       );
-    return loader(this.ROOT_PATH + this.PERSON_ROUTE).pipe(
-      switchMap((page) => of(page.results))
-    );
+    return loader().pipe(switchMap((page) => of(page.results)));
   }
 
   getFilms(urls: string[]): Observable<Film[]> {
@@ -135,5 +136,33 @@ export class SwService {
       scan((list: Film[], curr: Film) => [...list, curr], []),
       switchMap((lista) => of(lista))
     );
+  }
+
+  getPeopleRx(): Observable<Person[]> {
+    /**
+     * Que tal uma versão sem recursão? Totalmente reativa.
+     *
+     * Você consegue explicar a lógica aqui?
+     */
+
+    return this.http
+      .get<PersonPagination>(this.ROOT_PATH + this.PERSON_ROUTE + '?page=1')
+      .pipe(
+        switchMap(({ count }) => range(1, Math.floor(count / 10) + 1)),
+        mergeMap((page_num) =>
+          this.http.get<PersonPagination>(
+            this.ROOT_PATH + this.PERSON_ROUTE + `?page=${page_num}`
+          )
+        ),
+        scan(
+          (lista: Person[], curr: PersonPagination) =>
+            [...lista, ...curr.results].sort((a, b) =>
+              a.name
+                .toLocaleLowerCase()
+                .localeCompare(b.name.toLocaleLowerCase())
+            ),
+          []
+        )
+      );
   }
 }
