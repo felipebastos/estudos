@@ -1,17 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  reduce,
   map,
   Observable,
   of,
   switchMap,
-  take,
-  tap,
   from,
-  delay,
   scan,
-  mergeAll,
   mergeMap,
   range,
 } from 'rxjs';
