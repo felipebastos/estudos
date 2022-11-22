@@ -10,15 +10,15 @@ import {
   mergeMap,
   range,
 } from 'rxjs';
-import { Film } from './models/film';
-import { Person } from './models/person';
-import { PersonPagination } from './models/personPagination';
+import { Film } from '../models/film';
+import { Person } from '../models/person';
+import { PersonPagination } from '../models/personPagination';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SwService {
-  private ROOT_PATH: string = 'http://swapi.dev/api/';
+  private ROOT_PATH: string = 'https://swapi.dev/api/';
   private PERSON_ROUTE: string = 'people/';
 
   constructor(private http: HttpClient) {}

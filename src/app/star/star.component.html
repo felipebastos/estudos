@@ -1,0 +1,46 @@
+Encontre um personagem:
+<input type="number" [(ngModel)]="idToLoad" (input)="onIdChange()" />
+<div *ngIf="idToLoad > 0; else zero">
+    <!-- Para utilizar observables no template, precisamos usar o pipe async.
+        Visto que o observable pode não ter ainda notificado seu resultado,
+        a ? garante que só em caso de não-nulo serão pedidas as propriedades.
+    -->
+    <div *ngIf="person | async as p; else nenhum" class="container">
+        <div class="pcard">
+            <h2>Dados pessoais</h2>
+            <ul>
+                <li>{{ p.name }}</li>
+                <li>{{ p.height }}cm</li>
+                <li>{{ p.mass }}kg</li>
+                <li>{{ p.hair_color }}</li>
+            </ul>
+        </div>
+        <div class="pcard">
+            <h2>Filmes</h2>
+            <div *ngIf="(films$ | async) as films">
+                <ul>
+                    <li *ngFor="let filme of films">{{filme.title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <ng-template #nenhum> loading... </ng-template>
+</div>
+<ng-template #zero>
+    <div>Nenhum personagem a exibir.</div>
+</ng-template>
+<hr />
+<h2>Todos os personagens:</h2>
+Paginação (10 em 10):
+<input type="number" [(ngModel)]="pageToLoad" (input)="onPageChange()" /> Filtre
+por nome: <input type="text" [(ngModel)]="filtro" (input)="filtre()" />
+<div class="container">
+    <!-- Mais uma vez o pipe async para subscrever no observable.
+        Detalhe: depois disso não precisamos usar a ? como anteriormente pois
+        o objeto da iteração já não é um async, ele recebe os dados finais para uso.
+    -->
+    <div class="card" *ngFor="let each of people | async">
+        <h3>{{ each.name }}</h3>
+        <button (click)="ver(each.url)">Ver dados completos</button>
+    </div>
+</div>
