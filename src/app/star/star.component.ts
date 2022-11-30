@@ -1,17 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  filter,
-  from,
-  Observable,
-  of,
-  Subject,
-  switchMap,
-  take,
-  takeUntil,
-} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Film } from '../models/film';
 import { Person } from '../models/person';
-import { SwService } from './swservice.service';
+import * as fromSWActions from '../store/swstore/swstore.actions';
+import * as fromSWSelectors from '../store/swstore/swstore.selectors';
 
 @Component({
   selector: 'app-star-component',
@@ -21,8 +14,8 @@ import { SwService } from './swservice.service';
 export class StarComponent implements OnInit, OnDestroy {
   public person: Observable<Person> = new Observable<Person>();
   public films$: Observable<Film[]> = new Observable<Film[]>();
+  public id$: Observable<number> = new Observable<number>();
   public people: Observable<Person[]> = new Observable<Person[]>();
-  public everyone: Observable<Person[]> = new Observable<Person[]>();
 
   public idToLoad: number = 0;
   public pageToLoad: number = 0;
@@ -30,11 +23,17 @@ export class StarComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
 
-  constructor(private swapi: SwService) {}
+  constructor(private readonly store: Store) {
+    this.person = this.store.select(fromSWSelectors.selectLoadedPerson);
+    this.people = this.store.select(fromSWSelectors.selectLoadedPeople);
+    this.films$ = this.store.select(fromSWSelectors.selectLoadedFilms);
+    this.id$ = this.store.select(fromSWSelectors.selectLoadedId);
+  }
 
   ngOnInit(): void {
-    this.person = this.swapi.getPerson();
-    this.people = this.swapi.getPeopleRx();
+    this.id$.pipe(takeUntil(this.destroy$)).subscribe((valor) => {
+      this.idToLoad = valor;
+    });
   }
 
   ngOnDestroy(): void {
@@ -42,18 +41,21 @@ export class StarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onLoadPeople() {
+    this.store.dispatch(fromSWActions.loadPeople());
+  }
+
   onIdChange(): void {
-    this.person = this.swapi.getPerson(this.idToLoad);
-    this.person.pipe(take(1)).subscribe((person) => {
-      this.films$ = this.swapi.getFilms(person.films);
-    });
+    this.store.dispatch(fromSWActions.loadPerson({ id: this.idToLoad }));
   }
 
   onPageChange(): void {
     if (this.pageToLoad > 0) {
-      this.people = this.swapi.getPagePeople(this.pageToLoad);
+      this.store.dispatch(
+        fromSWActions.loadPagePeople({ page: this.pageToLoad })
+      );
     } else {
-      this.people = this.swapi.getPeopleRx();
+      this.store.dispatch(fromSWActions.loadPeople());
     }
   }
 
@@ -71,7 +73,7 @@ export class StarComponent implements OnInit, OnDestroy {
         );
       });
     } else {
-      this.people = this.swapi.getPeople();
+      this.store.dispatch(fromSWActions.loadPeople());
     }
   }
 }

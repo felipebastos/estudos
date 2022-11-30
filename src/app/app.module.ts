@@ -11,6 +11,11 @@ import { SwService } from './star/swservice.service';
 import { Component1Component } from './component1/component1.component';
 import { Component2Component } from './component2/component2.component';
 import { StarComponent } from './star/star.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AppReducer } from './store/app.reducer';
+import { SWEffects } from './store/swstore/swstore.effects';
+import { swreducer } from './store/swstore/swstore.reducer';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
@@ -31,6 +36,9 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature('app', AppReducer),
+    EffectsModule.forRoot([SWEffects]),
   ],
   providers: [SwService],
   bootstrap: [AppComponent],

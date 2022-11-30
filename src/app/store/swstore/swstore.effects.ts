@@ -1,0 +1,66 @@
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { map, mergeMap, of, switchMap } from 'rxjs';
+import { SwService } from 'src/app/star/swservice.service';
+import * as fromSWActions from './swstore.actions';
+
+@Injectable()
+export class SWEffects {
+  loadPerson$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromSWActions.loadPerson),
+      mergeMap((action) => {
+        return this.swservice.getPerson(action.id).pipe(
+          switchMap((loaded) => {
+            return of(
+              fromSWActions.loadPersonSuccess({ loaded }),
+              fromSWActions.setLoadedId({ id: action.id }),
+              fromSWActions.loadFilms({ list: loaded.films })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  loadPeople$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromSWActions.loadPeople),
+      mergeMap((action) => {
+        return this.swservice.getPeopleRx().pipe(
+          map((loaded) => {
+            return fromSWActions.loadPeopleSuccess({ loaded });
+          })
+        );
+      })
+    );
+  });
+
+  loadPagePeople$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromSWActions.loadPagePeople),
+      mergeMap((action) => {
+        return this.swservice
+          .getPagePeople(action.page)
+          .pipe(
+            map((people) => fromSWActions.loadPeopleSuccess({ loaded: people }))
+          );
+      })
+    );
+  });
+
+  loadFilms$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromSWActions.loadFilms),
+      mergeMap((action) => {
+        return this.swservice
+          .getFilms(action.list)
+          .pipe(
+            map((films) => fromSWActions.loadFilmsSuccess({ list: films }))
+          );
+      })
+    );
+  });
+
+  constructor(private swservice: SwService, private actions$: Actions) {}
+}

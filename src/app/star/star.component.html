@@ -34,6 +34,7 @@ Encontre um personagem:
 Paginação (10 em 10):
 <input type="number" [(ngModel)]="pageToLoad" (input)="onPageChange()" /> Filtre
 por nome: <input type="text" [(ngModel)]="filtro" (input)="filtre()" />
+<button (click)="onLoadPeople()">Atualizar</button>
 <div class="container">
     <!-- Mais uma vez o pipe async para subscrever no observable.
         Detalhe: depois disso não precisamos usar a ? como anteriormente pois
