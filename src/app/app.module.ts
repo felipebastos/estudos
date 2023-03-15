@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { RouterModule, Routes } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppReducer } from './store/app.reducer';
 import { SWEffects } from './store/swstore/swstore.effects';
 import { swreducer } from './store/swstore/swstore.reducer';
+import { XwingInterceptor } from './star/xwing.interceptor';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
@@ -40,7 +41,10 @@ const routes: Routes = [
     StoreModule.forFeature('app', AppReducer),
     EffectsModule.forRoot([SWEffects]),
   ],
-  providers: [SwService],
+  providers: [
+    SwService,
+    { provide: HTTP_INTERCEPTORS, useClass: XwingInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
