@@ -17,6 +17,13 @@ import { AppReducer } from './store/app.reducer';
 import { SWEffects } from './store/swstore/swstore.effects';
 import { swreducer } from './store/swstore/swstore.reducer';
 import { XwingInterceptor } from './star/xwing.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
@@ -40,6 +47,12 @@ const routes: Routes = [
     StoreModule.forRoot({}),
     StoreModule.forFeature('app', AppReducer),
     EffectsModule.forRoot([SWEffects]),
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     SwService,

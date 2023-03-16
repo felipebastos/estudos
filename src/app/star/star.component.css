@@ -5,6 +5,11 @@ div.container {
     justify-content: center;
 }
 
+div.container-inputs {
+    display: flex;
+    flex-direction: row;
+}
+
 div.card {
     border: 1px solid white;
     border-radius: 10px;
@@ -15,8 +20,8 @@ div.card {
 }
 
 div.pcard {
-    border: 1px solid white;
-    border-radius: 10px;
+    background-color: #8BC34A;
+    border-radius: 25px;
     margin: 10px;
     padding: 5px;
     width: 20%;
