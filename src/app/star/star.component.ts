@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { Film } from '../models/film';
@@ -23,7 +24,7 @@ export class StarComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
 
-  constructor(private readonly store: Store) {
+  constructor(private readonly store: Store, private router: Router) {
     this.person = this.store.select(fromSWSelectors.selectLoadedPerson);
     this.people = this.store.select(fromSWSelectors.selectLoadedPeople);
     this.films$ = this.store.select(fromSWSelectors.selectLoadedFilms);
@@ -63,6 +64,8 @@ export class StarComponent implements OnInit, OnDestroy {
     const num: number = Number(url.split('/').reverse()[1]);
     this.idToLoad = num;
     this.onIdChange();
+
+    this.router.navigate([`/person`], { queryParams: { id: num } });
   }
 
   filtre(): void {

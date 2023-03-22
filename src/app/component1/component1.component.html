@@ -1,1 +1,36 @@
-<p>component1 works!</p>
+<mat-form-field appearance="outline">
+    <mat-label>Encontre um personagem</mat-label>
+    <input matInput type="number" [(ngModel)]="idToLoad" (input)="onIdChange()" />
+</mat-form-field>
+<div *ngIf="idToLoad > 0; else zero">
+    <!-- Para utilizar observables no template, precisamos usar o pipe async.
+        Visto que o observable pode não ter ainda notificado seu resultado,
+        a ? garante que só em caso de não-nulo serão pedidas as propriedades.
+    -->
+    <div *ngIf="person | async as p; else nenhum" class="container">
+        <mat-card>
+            <mat-card-header>Dados pessoais</mat-card-header>
+            <mat-card-content>
+                <ul>
+                    <li>{{ p.name }}</li>
+                    <li>{{ p.height }}cm</li>
+                    <li>{{ p.mass }}kg</li>
+                    <li>{{ p.hair_color }}</li>
+                </ul>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-header>Filmes</mat-card-header>
+            <mat-card-content *ngIf="(films$ | async) as films">
+                <ul>
+                    <li *ngFor="let filme of films">{{filme.title}}</li>
+                </ul>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <ng-template #nenhum><mat-spinner></mat-spinner>
+    </ng-template>
+</div>
+<ng-template #zero>
+    <div>Nenhum personagem a exibir.</div>
+</ng-template>
