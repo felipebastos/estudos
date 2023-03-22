@@ -2,12 +2,14 @@ div.container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 div.container-inputs {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }
 
 div.card {
@@ -26,4 +28,8 @@ div.pcard {
     padding: 5px;
     width: 20%;
     text-align: left;
+}
+
+button.botaomaior {
+    padding: 1rem;
 }

@@ -24,11 +24,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { SophiaComponent } from './sophia/sophia.component';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
-  { path: 'um', component: Component1Component },
-  { path: 'dois', component: Component2Component },
+  { path: 'person', component: Component1Component },
+  { path: 'dois/:variavel', component: Component2Component },
+  { path: 'dificil', component: SophiaComponent },
 ];
 
 @NgModule({
@@ -38,6 +44,7 @@ const routes: Routes = [
     Component1Component,
     Component2Component,
     StarComponent,
+    SophiaComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +60,9 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   providers: [
     SwService,
