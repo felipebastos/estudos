@@ -51,28 +51,6 @@ export class Component1Component implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(0);
     this.destroy$.complete();
-    this.route.queryParams
-      .pipe(takeUntil(this.destroy$))
-      .pipe(
-        map((params) => {
-          return params['id'];
-        })
-      )
-      .subscribe((valor) => {
-        if (valor) {
-          this.idToLoad = valor;
-          this.onIdChange();
-        } else {
-          this.id$.pipe(takeUntil(this.destroy$)).subscribe((valor) => {
-            this.idToLoad = valor;
-          });
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(0);
-    this.destroy$.complete();
   }
 
   onIdChange(): void {
