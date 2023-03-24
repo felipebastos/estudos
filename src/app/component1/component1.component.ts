@@ -43,6 +43,7 @@ export class Component1Component implements OnInit, OnDestroy {
           this.id$.pipe(takeUntil(this.destroy$)).subscribe((valor) => {
             this.idToLoad = valor;
           });
+          // TODO: teste
         }
       });
   }

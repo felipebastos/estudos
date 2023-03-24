@@ -32,3 +32,8 @@ export const loadPagePeople = createAction(
   '[SW] Load page people',
   props<{ page: number }>()
 );
+export const loadHora = createAction('[HC] Inicia a atualização de hora');
+export const loadHoraSucesso = createAction(
+  '[HC] Sucesso na hora',
+  props<{ tempo: string }>()
+);
