@@ -29,12 +29,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { SophiaComponent } from './sophia/sophia.component';
+import { HoracertaComponent } from './horacerta/horacerta.component';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
   { path: 'person', component: Component1Component },
   { path: 'dois/:variavel', component: Component2Component },
   { path: 'dificil', component: SophiaComponent },
+  { path: 'hora', component: HoracertaComponent },
 ];
 
 @NgModule({
@@ -45,6 +47,7 @@ const routes: Routes = [
     Component2Component,
     StarComponent,
     SophiaComponent,
+    HoracertaComponent,
   ],
   imports: [
     BrowserModule,

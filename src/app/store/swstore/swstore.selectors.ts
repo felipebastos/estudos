@@ -27,3 +27,8 @@ export const selectLoadedFilms = createSelector(
   selectSWState,
   (state: StarState) => state.loadedFilms
 );
+
+export const selectHoraCerta = createSelector(
+  selectSWState,
+  (state: StarState) => state.horaCerta
+);

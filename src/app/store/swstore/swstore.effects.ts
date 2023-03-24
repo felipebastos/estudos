@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, of, switchMap } from 'rxjs';
+import {
+  delay,
+  interval,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  timeInterval,
+  timeout,
+} from 'rxjs';
 import { SwService } from 'src/app/star/swservice.service';
+import { ApihoraService } from 'src/app/horacerta/apihora.service';
 import * as fromSWActions from './swstore.actions';
 
 @Injectable()
@@ -62,5 +73,26 @@ export class SWEffects {
     );
   });
 
-  constructor(private swservice: SwService, private actions$: Actions) {}
+  loadHora$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromSWActions.loadHora),
+      mergeMap(() => {
+        return interval(5000).pipe(
+          switchMap(() => {
+            return this.apihora.getHora().pipe(
+              map((result) => {
+                return fromSWActions.loadHoraSucesso({ tempo: result.tempo });
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  constructor(
+    private swservice: SwService,
+    private apihora: ApihoraService,
+    private actions$: Actions
+  ) {}
 }

@@ -8,6 +8,7 @@ export interface StarState {
   loadedPerson: Person;
   loadedFilms: Film[];
   loadedPeople: Person[];
+  horaCerta: string;
 }
 
 export const initialState: StarState = {
@@ -15,6 +16,7 @@ export const initialState: StarState = {
   loadedPerson: new Person(),
   loadedFilms: [],
   loadedPeople: [],
+  horaCerta: 'Não iniciado',
 };
 
 export const swreducer = createReducer(
@@ -42,6 +44,12 @@ export const swreducer = createReducer(
     return {
       ...state,
       loadedFilms: action.list,
+    };
+  }),
+  on(fromSWActions.loadHoraSucesso, (state, action): StarState => {
+    return {
+      ...state,
+      horaCerta: action.tempo,
     };
   })
 );
