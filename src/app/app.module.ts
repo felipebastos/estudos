@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -30,6 +31,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { SophiaComponent } from './sophia/sophia.component';
 import { HoracertaComponent } from './horacerta/horacerta.component';
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   { path: '', component: StarComponent },
@@ -57,6 +59,11 @@ const routes: Routes = [
     StoreModule.forRoot({}),
     StoreModule.forFeature('app', AppReducer),
     EffectsModule.forRoot([SWEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+    }),
     BrowserAnimationsModule,
     MatCardModule,
     MatButtonModule,
@@ -66,6 +73,10 @@ const routes: Routes = [
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     SwService,
